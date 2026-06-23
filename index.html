@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>دندانپزشکی آرایا | لبخند رویایی شما</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --primary:      #0891b2;
+      --primary-dark: #0e7490;
+      --primary-deep: #0c4a6e;
+      --accent:       #06b6d4;
+      --accent-light: #cffafe;
+      --gold:         #f59e0b;
+      --text:         #0f172a;
+      --muted:        #64748b;
+      --bg:           #f0f9ff;
+      --white:        #ffffff;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Vazirmatn', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 3px; }
+
+    /* ══════════════════════════════════
+       NAVBAR
+    ══════════════════════════════════ */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      padding: 1.1rem 2.5rem;
+      transition: all .4s ease;
+      background: rgba(255,255,255,.0);
+    }
+    .nav-inner {
+      max-width: 1280px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .logo {
+      display: flex; align-items: center; gap: .65rem;
+      font-size: 1.3rem; font-weight: 800; color: white;
+      text-decoration: none;
+    }
+    .logo-icon {
+      width: 40px; height: 40px;
+      background: rgba(255,255,255,.18);
+      border: 1px solid rgba(255,255,255,.25);
+      backdrop-filter: blur(8px);
+      border-radius: 13px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem; transition: all .3s;
+    }
+    .nav-links { display: flex; gap: 2.2rem; list-style: none; }
+    .nav-links a {
+      text-decoration: none; color: rgba(255,255,255,.82);
+      font-weight: 500; font-size: .93rem; transition: color .3s;
+    }
+    .nav-links a:hover { color: white; }
+    .nav-cta {
+      background: white !important; color: var(--primary-deep) !important;
+      padding: .6rem 1.5rem; border-radius: 50px;
+      font-weight: 700 !important; box-shadow: 0 4px 20px rgba(0,0,0,.18);
+      transition: all .3s !important;
+    }
+    .nav-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,0,0,.25) !important; }
+
+    nav.scrolled {
+      background: rgba(255,255,255,.96);
+      box-shadow: 0 2px 24px rgba(0,0,0,.07);
+      backdrop-filter: blur(20px);
+    }
+    nav.scrolled .logo { color: var(--primary-deep); }
+    nav.scrolled .logo-icon { background: var(--primary); border-color: transparent; }
+    nav.scrolled .nav-links a { color: var(--muted); }
+    nav.scrolled .nav-links a:hover { color: var(--primary); }
+    nav.scrolled .nav-cta { background: var(--primary) !important; color: white !important; }
+
+    /* ══════════════════════════════════
+       HERO — full-bleed image
+    ══════════════════════════════════ */
+    .hero {
+      position: relative;
+      width: 100%;
+      height: 72vh;
+      min-height: 520px;
+      max-height: 860px;
+      overflow: hidden;
+      cursor: none;
+    }
+
+    /* ── Image layers ── */
+    .hero-img-base,
+    .hero-img-reveal {
+      position: absolute;
+      inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      object-position: center 20%;
+      display: block;
+    }
+
+    .hero-img-base  { z-index: 0; }
+
+    .hero-img-reveal {
+      z-index: 1;
+      /* mask starts as hidden — JS updates position */
+      -webkit-mask-image: radial-gradient(circle 260px at 50% 50%,
+        black 0%, black 28%,
+        rgba(0,0,0,.55) 52%,
+        rgba(0,0,0,.12) 70%,
+        transparent 100%);
+      mask-image: radial-gradient(circle 260px at 50% 50%,
+        black 0%, black 28%,
+        rgba(0,0,0,.55) 52%,
+        rgba(0,0,0,.12) 70%,
+        transparent 100%);
+      -webkit-mask-size: 100% 100%;
+      mask-size: 100% 100%;
+      opacity: 0;
+      transition: opacity .45s ease;
+    }
+
+    /* scanning-line tint that layers over the reveal */
+    .hero-scanlines {
+      position: absolute; inset: 0; z-index: 2;
+      background: repeating-linear-gradient(
+        0deg,
+        rgba(0,210,255,.025) 0px,
+        rgba(0,210,255,.025) 1px,
+        transparent 1px,
+        transparent 4px
+      );
+      -webkit-mask-image: radial-gradient(circle 260px at 50% 50%,
+        black 0%, black 28%,
+        rgba(0,0,0,.55) 52%,
+        rgba(0,0,0,.12) 70%,
+        transparent 100%);
+      mask-image: radial-gradient(circle 260px at 50% 50%,
+        black 0%, black 28%,
+        rgba(0,0,0,.55) 52%,
+        rgba(0,0,0,.12) 70%,
+        transparent 100%);
+      opacity: 0;
+      transition: opacity .45s ease;
+      pointer-events: none;
+    }
+
+    /* ── Bottom fade — image melts into white page bg ── */
+    .hero-fade {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      height: 16%;
+      z-index: 4;
+      background: linear-gradient(to bottom,
+        transparent 0%,
+        rgba(255,255,255,.60) 65%,
+        #ffffff 100%);
+      pointer-events: none;
+    }
+
+    /* ── Custom cursor ring ── */
+    .cursor-ring {
+      position: absolute; z-index: 10;
+      width: 52px; height: 52px;
+      border-radius: 50%;
+      border: 2px solid rgba(103,232,249,.7);
+      box-shadow:
+        0 0 18px rgba(6,182,212,.55),
+        inset 0 0 12px rgba(6,182,212,.2);
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity .35s ease, transform .07s linear, width .3s ease, height .3s ease;
+    }
+    .cursor-dot {
+      position: absolute; z-index: 11;
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: #67e8f9;
+      box-shadow: 0 0 10px rgba(103,232,249,.9);
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity .35s ease;
+    }
+
+    /* ── Hero body: text section below the image ── */
+    .hero-body {
+      background: white;
+      padding: 2.8rem 2rem 4rem;
+      text-align: center;
+    }
+    .hero-body-inner {
+      max-width: 760px; margin: 0 auto;
+    }
+    .hero-tag {
+      display: inline-flex; align-items: center; gap: .5rem;
+      background: var(--accent-light);
+      border: 1px solid rgba(8,145,178,.18);
+      color: var(--primary-dark);
+      padding: .42rem 1.1rem; border-radius: 50px;
+      font-size: .82rem; font-weight: 700; margin-bottom: 1.4rem;
+    }
+    .tag-dot { width: 8px; height: 8px; background: #22c55e; border-radius: 50%; animation: blink 2s infinite; }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
+
+    .hero-body h1 {
+      font-size: clamp(2.2rem, 4.5vw, 3.8rem);
+      font-weight: 900; color: var(--primary-deep); line-height: 1.18;
+      margin-bottom: 1rem;
+    }
+    .hero-body h1 em { font-style: normal; color: var(--primary); }
+
+    .hero-body p {
+      font-size: 1.1rem; color: var(--muted);
+      line-height: 1.85; margin-bottom: 2.2rem;
+      max-width: 580px; margin-left: auto; margin-right: auto;
+    }
+    .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
+    .btn-w {
+      background: var(--primary); color: white;
+      padding: .9rem 2.2rem; border-radius: 50px;
+      font-size: .97rem; font-weight: 700;
+      text-decoration: none; display: inline-flex; align-items: center; gap: .5rem;
+      font-family: 'Vazirmatn', sans-serif;
+      transition: all .3s; box-shadow: 0 6px 28px rgba(8,145,178,.35);
+    }
+    .btn-w:hover { transform: translateY(-3px); background: var(--primary-dark); box-shadow: 0 14px 40px rgba(8,145,178,.45); }
+    .btn-g {
+      border: 2px solid rgba(8,145,178,.3); color: var(--primary-deep);
+      padding: .9rem 2.2rem; border-radius: 50px;
+      font-size: .97rem; font-weight: 600;
+      text-decoration: none; display: inline-flex; align-items: center; gap: .5rem;
+      font-family: 'Vazirmatn', sans-serif;
+      transition: all .3s; background: transparent;
+    }
+    .btn-g:hover { background: var(--accent-light); border-color: var(--primary); transform: translateY(-3px); }
+
+    /* mini badges row below buttons */
+    .hero-badges {
+      display: flex; gap: 1.5rem; justify-content: center;
+      flex-wrap: wrap; margin-top: 2.2rem;
+    }
+    .h-badge {
+      display: flex; align-items: center; gap: .5rem;
+      background: var(--bg); border: 1px solid rgba(8,145,178,.1);
+      border-radius: 50px; padding: .5rem 1.1rem;
+      font-size: .85rem; color: var(--muted); font-weight: 500;
+    }
+    .h-badge strong { color: var(--primary-deep); font-weight: 800; }
+
+    /* ══════════════════════════════════
+       STATS
+    ══════════════════════════════════ */
+    .stats { background: white; padding: 1rem 2rem 3.5rem; border-top: 1px solid rgba(8,145,178,.08); }
+    .stats-inner {
+      max-width: 1200px; margin: 0 auto;
+      display: grid; grid-template-columns: repeat(4,1fr);
+    }
+    .stat-item {
+      text-align: center; padding: 1.5rem;
+      border-radius: 20px; transition: all .3s;
+    }
+    .stat-item:hover { background: var(--bg); transform: translateY(-4px); }
+    .stat-num {
+      font-size: 2.7rem; font-weight: 900; line-height: 1;
+      background: linear-gradient(135deg, var(--primary-deep), var(--accent));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .stat-lbl { font-size: .9rem; color: var(--muted); margin-top: .35rem; font-weight: 500; }
+
+    /* ══════════════════════════════════
+       SHARED SECTION STYLES
+    ══════════════════════════════════ */
+    .sec-head { text-align: center; margin-bottom: 3.5rem; }
+    .sec-tag {
+      display: inline-block;
+      background: var(--accent-light); color: var(--primary-dark);
+      padding: .38rem 1.1rem; border-radius: 50px;
+      font-size: .78rem; font-weight: 700; letter-spacing: .03em;
+      margin-bottom: .85rem;
+    }
+    .sec-head h2 { font-size: 2.3rem; font-weight: 900; color: var(--primary-deep); margin-bottom: .7rem; }
+    .sec-head p  { font-size: 1rem; color: var(--muted); max-width: 540px; margin: 0 auto; line-height: 1.8; }
+
+    /* ══════════════════════════════════
+       SERVICES
+    ══════════════════════════════════ */
+    .services { padding: 5rem 2rem; background: var(--bg); }
+    .svc-grid {
+      max-width: 1200px; margin: 0 auto;
+      display: grid; grid-template-columns: repeat(3,1fr); gap: 1.4rem;
+    }
+    .svc-card {
+      background: white; border-radius: 22px; padding: 1.9rem;
+      position: relative; overflow: hidden;
+      border: 1px solid rgba(8,145,178,.07);
+      transition: all .4s ease;
+    }
+    .svc-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      transform: scaleX(0); transform-origin: right; transition: transform .4s ease;
+    }
+    .svc-card:hover { transform: translateY(-9px); box-shadow: 0 22px 55px rgba(8,145,178,.13); }
+    .svc-card:hover::before { transform: scaleX(1); transform-origin: left; }
+    .svc-icon {
+      width: 54px; height: 54px;
+      background: linear-gradient(135deg, var(--accent-light), rgba(8,145,178,.1));
+      border-radius: 15px; display: flex; align-items: center;
+      justify-content: center; font-size: 1.6rem; margin-bottom: 1.1rem;
+      transition: transform .3s;
+    }
+    .svc-card:hover .svc-icon { transform: scale(1.1) rotate(-5deg); }
+    .svc-card h3 { font-size: 1.1rem; font-weight: 800; color: var(--primary-deep); margin-bottom: .5rem; }
+    .svc-card p  { font-size: .9rem; color: var(--muted); line-height: 1.75; }
+
+    /* ══════════════════════════════════
+       WHY US
+    ══════════════════════════════════ */
+    .why-us {
+      padding: 5rem 2rem;
+      background: linear-gradient(145deg, #062a47 0%, #0c4a6e 45%, #0e7490 100%);
+      position: relative; overflow: hidden;
+    }
+    .why-us::before {
+      content: ''; position: absolute;
+      width: 550px; height: 550px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,255,255,.05) 0%, transparent 70%);
+      top: -180px; left: -80px; pointer-events: none;
+    }
+    .why-inner {
+      max-width: 1200px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 5rem;
+      align-items: center; position: relative; z-index: 1;
+    }
+    .why-text .sec-tag { background: rgba(255,255,255,.14); color: white; }
+    .why-text h2 { font-size: 2.3rem; font-weight: 900; color: white; margin-bottom: .9rem; line-height: 1.3; }
+    .why-text > p { font-size: 1rem; color: rgba(255,255,255,.73); line-height: 1.85; margin-bottom: 1.8rem; }
+    .feat-list { display: flex; flex-direction: column; gap: .9rem; }
+    .feat {
+      display: flex; gap: .95rem; align-items: flex-start;
+      background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.1);
+      border-radius: 16px; padding: 1rem 1.2rem;
+      transition: all .3s;
+    }
+    .feat:hover { background: rgba(255,255,255,.13); transform: translateX(-5px); }
+    .feat-ic {
+      width: 40px; height: 40px; flex-shrink: 0;
+      background: rgba(255,255,255,.14); border-radius: 12px;
+      display: flex; align-items: center; justify-content: center; font-size: 1.1rem;
+    }
+    .feat h4 { font-size: .95rem; font-weight: 700; color: white; margin-bottom: .2rem; }
+    .feat p  { font-size: .85rem; color: rgba(255,255,255,.63); line-height: 1.6; margin: 0; }
+    .why-card {
+      background: rgba(255,255,255,.09); backdrop-filter: blur(14px);
+      border: 1px solid rgba(255,255,255,.14);
+      border-radius: 28px; padding: 2.5rem;
+      text-align: center; color: white;
+    }
+    .why-card .big-ic { font-size: 5rem; display: block; margin-bottom: 1rem; animation: floatY 4s ease-in-out infinite; }
+    @keyframes floatY { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+    .why-card h3 { font-size: 1.5rem; font-weight: 800; margin-bottom: .7rem; }
+    .why-card p  { font-size: .97rem; opacity: .76; line-height: 1.75; margin-bottom: 1.7rem; }
+    .btn-ws {
+      background: white; color: var(--primary-deep);
+      padding: .75rem 1.8rem; border-radius: 50px;
+      font-weight: 700; text-decoration: none;
+      font-size: .93rem; font-family: 'Vazirmatn', sans-serif;
+      display: inline-block; transition: all .3s;
+      box-shadow: 0 6px 20px rgba(0,0,0,.2);
+    }
+    .btn-ws:hover { transform: translateY(-3px); box-shadow: 0 12px 35px rgba(0,0,0,.3); }
+
+    /* ══════════════════════════════════
+       TESTIMONIALS
+    ══════════════════════════════════ */
+    .testimonials { padding: 5rem 2rem; background: white; }
+    .testi-grid {
+      max-width: 1200px; margin: 0 auto;
+      display: grid; grid-template-columns: repeat(3,1fr); gap: 1.4rem;
+    }
+    .testi-card {
+      border-radius: 22px; padding: 1.8rem;
+      border: 1px solid rgba(8,145,178,.09);
+      transition: all .35s; position: relative;
+      background: var(--bg);
+    }
+    .testi-card:hover { transform: translateY(-6px); box-shadow: 0 20px 50px rgba(8,145,178,.1); }
+    .testi-card::before {
+      content: '"'; font-size: 5rem; line-height: .8;
+      color: var(--accent-light); font-family: Georgia, serif;
+      position: absolute; top: 1rem; right: 1.5rem; pointer-events: none;
+    }
+    .stars { color: var(--gold); font-size: .95rem; letter-spacing: 2px; margin-bottom: .8rem; }
+    .testi-text { font-size: .9rem; color: var(--muted); line-height: 1.8; margin-bottom: 1.2rem; }
+    .testi-author { display: flex; align-items: center; gap: .75rem; }
+    .avatar {
+      width: 42px; height: 42px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      display: flex; align-items: center; justify-content: center;
+      color: white; font-weight: 800; font-size: .95rem; flex-shrink: 0;
+    }
+    .a-name { font-weight: 700; color: var(--primary-deep); font-size: .88rem; }
+    .a-role { font-size: .76rem; color: var(--muted); }
+
+    /* ══════════════════════════════════
+       CTA
+    ══════════════════════════════════ */
+    .cta-wrap { padding: 5rem 2rem; background: var(--bg); }
+    .cta-box {
+      max-width: 920px; margin: 0 auto;
+      background: linear-gradient(135deg, #062a47 0%, #0891b2 100%);
+      border-radius: 32px; padding: 4.5rem 3rem;
+      text-align: center; color: white; position: relative; overflow: hidden;
+    }
+    .cta-box::before {
+      content: ''; position: absolute;
+      width: 380px; height: 380px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,255,255,.09) 0%, transparent 70%);
+      top: -140px; right: -90px; pointer-events: none;
+    }
+    .cta-box h2 { font-size: 2.1rem; font-weight: 900; margin-bottom: .7rem; }
+    .cta-box p  { font-size: 1.05rem; opacity: .8; margin-bottom: 2rem; line-height: 1.75; }
+    .cta-btns   { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+
+    /* ══════════════════════════════════
+       FOOTER
+    ══════════════════════════════════ */
+    footer { background: #061524; color: rgba(255,255,255,.58); padding: 4rem 2rem 2rem; }
+    .foot-grid {
+      max-width: 1200px; margin: 0 auto;
+      display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 3rem;
+      padding-bottom: 2.5rem;
+      border-bottom: 1px solid rgba(255,255,255,.07);
+    }
+    .foot-brand p { font-size: .88rem; line-height: 1.75; margin-top: 1rem; }
+    .foot-social { display: flex; gap: .55rem; margin-top: 1.2rem; }
+    .soc {
+      width: 35px; height: 35px; background: rgba(255,255,255,.07);
+      border-radius: 10px; display: flex; align-items: center; justify-content: center;
+      font-size: .95rem; text-decoration: none; transition: all .3s;
+    }
+    .soc:hover { background: var(--primary); transform: translateY(-3px); }
+    .foot-col h4 { color: white; font-size: .92rem; font-weight: 700; margin-bottom: 1rem; }
+    .foot-col ul { list-style: none; display: flex; flex-direction: column; gap: .5rem; }
+    .foot-col ul a { color: rgba(255,255,255,.52); text-decoration: none; font-size: .86rem; transition: color .3s; }
+    .foot-col ul a:hover { color: var(--accent); }
+    .foot-bot { max-width: 1200px; margin: 1.5rem auto 0; text-align: center; font-size: .82rem; }
+
+    /* ══════════════════════════════════
+       FADE-UP ANIMATION
+    ══════════════════════════════════ */
+    .fu { opacity: 0; transform: translateY(28px); transition: opacity .7s ease, transform .7s ease; }
+    .fu.vis { opacity: 1; transform: translateY(0); }
+    .d1 { transition-delay: .1s; } .d2 { transition-delay: .2s; }
+    .d3 { transition-delay: .3s; } .d4 { transition-delay: .4s; }
+
+    /* ══════════════════════════════════
+       RESPONSIVE
+    ══════════════════════════════════ */
+    @media (max-width: 900px) {
+      .hero-text { max-width: 100%; }
+      .stats-inner { grid-template-columns: repeat(2,1fr); }
+      .svc-grid { grid-template-columns: 1fr; }
+      .why-inner { grid-template-columns: 1fr; gap: 2.5rem; }
+      .testi-grid { grid-template-columns: 1fr; }
+      .foot-grid { grid-template-columns: 1fr 1fr; }
+      .nav-links { display: none; }
+      .hf-top-right, .hf-mid-right { display: none; }
+    }
+    @media (max-width: 500px) {
+      .hero-text h1 { font-size: 2rem; }
+      .cta-box { padding: 3rem 1.5rem; }
+      .foot-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════ NAVBAR ══════════════ -->
+<nav id="navbar">
+  <div class="nav-inner">
+    <a href="#" class="logo">
+      <div class="logo-icon">🦷</div>
+      دندانپزشکی آرایا
+    </a>
+    <ul class="nav-links">
+      <li><a href="#services">خدمات</a></li>
+      <li><a href="#why">مزایا</a></li>
+      <li><a href="#testimonials">نظرات</a></li>
+      <li><a href="#contact" class="nav-cta">رزرو نوبت</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ══════════════ HERO — image only ══════════════ -->
+<section class="hero" id="hero">
+
+  <img src="after.png"  alt="لبخند" class="hero-img-base">
+  <img src="before.png" alt="ایمپلنت" class="hero-img-reveal" id="revealImg">
+  <div class="hero-scanlines" id="scanLines"></div>
+  <div class="hero-fade"></div>
+
+  <div class="cursor-ring" id="cursorRing"></div>
+  <div class="cursor-dot"  id="cursorDot"></div>
+
+</section>
+
+<!-- ══════════════ HERO BODY — text below image ══════════════ -->
+<section class="hero-body">
+  <div class="hero-body-inner fu">
+    <div class="hero-tag">
+      <span class="tag-dot"></span>
+      در حال پذیرش بیمار جدید
+    </div>
+    <h1>
+      لبخند <em>رویایی</em> شما<br>
+      شروع می‌شود
+    </h1>
+    <p>
+      با پیشرفته‌ترین تکنولوژی دندانپزشکی دنیا و تیم متخصص بین‌المللی،
+      بهترین خدمات را در آرام‌ترین فضا تجربه کنید.
+    </p>
+    <div class="hero-btns">
+      <a href="#contact" class="btn-w">📅 رزرو رایگان</a>
+      <a href="#services" class="btn-g">مشاهده خدمات &larr;</a>
+    </div>
+    <div class="hero-badges">
+      <div class="h-badge">😊 <strong>+۲۰۰۰</strong> بیمار راضی</div>
+      <div class="h-badge">⭐ <strong>۴.۹</strong> امتیاز بیماران</div>
+      <div class="h-badge">🏆 <strong>+۱۵</strong> سال تجربه</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ STATS ══════════════ -->
+<section class="stats">
+  <div class="stats-inner">
+    <div class="stat-item fu">
+      <div class="stat-num" data-target="15">۰</div>
+      <div class="stat-lbl">سال تجربه</div>
+    </div>
+    <div class="stat-item fu d1">
+      <div class="stat-num" data-target="2000">۰</div>
+      <div class="stat-lbl">بیمار راضی</div>
+    </div>
+    <div class="stat-item fu d2">
+      <div class="stat-num" data-target="50">۰</div>
+      <div class="stat-lbl">جایزه بین‌المللی</div>
+    </div>
+    <div class="stat-item fu d3">
+      <div class="stat-num" data-target="98">۰</div>
+      <div class="stat-lbl">درصد رضایت</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ SERVICES ══════════════ -->
+<section class="services" id="services">
+  <div class="sec-head fu">
+    <span class="sec-tag">خدمات تخصصی</span>
+    <h2>همه چیز برای لبخند شما</h2>
+    <p>از پیشگیری تا پیچیده‌ترین درمان‌ها، با بهترین تکنولوژی روز دنیا</p>
+  </div>
+  <div class="svc-grid">
+    <div class="svc-card fu">
+      <div class="svc-icon">🦷</div>
+      <h3>ایمپلنت دندانی</h3>
+      <p>جایگزینی دائمی دندان‌های از دست رفته با ایمپلنت‌های تیتانیومی استاندارد بین‌المللی. ماندگاری مادام‌العمر.</p>
+    </div>
+    <div class="svc-card fu d1">
+      <div class="svc-icon">✨</div>
+      <h3>لمینت و ونیر</h3>
+      <p>تبدیل لبخند به شاهکاری هنری با لمینت‌های سرامیکی نازک. نتیجه‌ای کاملاً طبیعی در ۲ جلسه.</p>
+    </div>
+    <div class="svc-card fu d2">
+      <div class="svc-icon">⚡</div>
+      <h3>بلیچینگ حرفه‌ای</h3>
+      <p>سفیدکردن تا ۸ درجه در یک جلسه با روش‌های Zoom و لیزر. بدون آسیب به مینا، با نتیجه‌ای ماندگار.</p>
+    </div>
+    <div class="svc-card fu d1">
+      <div class="svc-icon">🔬</div>
+      <h3>ارتودنسی نامرئی</h3>
+      <p>تراز دندان‌ها با الاینرهای شفاف Invisalign. بدون سیم، بدون بریس، بدون محدودیت غذایی.</p>
+    </div>
+    <div class="svc-card fu d2">
+      <div class="svc-icon">🛡️</div>
+      <h3>درمان ریشه بدون درد</h3>
+      <p>نجات دندان با جدیدترین روش‌های Root Canal Therapy. با بی‌حسی موضعی، بدون هیچ‌گونه ناراحتی.</p>
+    </div>
+    <div class="svc-card fu d3">
+      <div class="svc-icon">😊</div>
+      <h3>دندانپزشکی کودکان</h3>
+      <p>محیط دوستانه و رنگارنگ برای کوچولوها. با روش‌های بازی‌محور، ترس از دندانپزشکی برای همیشه.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ WHY US ══════════════ -->
+<section class="why-us" id="why">
+  <div class="why-inner">
+    <div class="why-text fu">
+      <span class="sec-tag">چرا آرایا؟</span>
+      <h2>تفاوت ما در<br>جزئیات است</h2>
+      <p>باور داریم هر بیمار منحصربه‌فرد است. رویکرد شخصی‌سازی‌شده، تکنولوژی پیشرفته و تجربه‌ای بدون استرس — این است تعهد ما.</p>
+      <div class="feat-list">
+        <div class="feat">
+          <div class="feat-ic">🏆</div>
+          <div>
+            <h4>متخصصان تراز اول</h4>
+            <p>فارغ‌التحصیل بهترین دانشگاه‌های اروپا و آمریکا با سابقه بین‌المللی</p>
+          </div>
+        </div>
+        <div class="feat">
+          <div class="feat-ic">🖥️</div>
+          <div>
+            <h4>تکنولوژی CBCT سه‌بعدی</h4>
+            <p>تشخیص دقیق با اسکن سه‌بعدی و برنامه‌ریزی دیجیتال قبل از هر درمان</p>
+          </div>
+        </div>
+        <div class="feat">
+          <div class="feat-ic">💉</div>
+          <div>
+            <h4>بدون درد — تضمینی</h4>
+            <p>پروتکل بی‌دردی پیشرفته. اگر احساس درد کردید، هزینه را باز می‌گردانیم.</p>
+          </div>
+        </div>
+        <div class="feat">
+          <div class="feat-ic">📋</div>
+          <div>
+            <h4>مشاوره اولیه رایگان</h4>
+            <p>اولین جلسه کاملاً رایگان. طرح درمان کامل، بدون هیچ تعهدی.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="why-card fu d2">
+      <span class="big-ic">🦷</span>
+      <h3>مشاوره رایگان</h3>
+      <p>همین الان نوبت مشاوره رایگان رزرو کنید. متخصص ما در اولین جلسه کامل‌ترین طرح درمانی متناسب با نیاز شما ارائه می‌دهد.</p>
+      <a href="tel:+9821XXXXXXXX" class="btn-ws">📞 تماس بگیرید</a>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ TESTIMONIALS ══════════════ -->
+<section class="testimonials" id="testimonials">
+  <div class="sec-head fu">
+    <span class="sec-tag">نظرات بیماران</span>
+    <h2>آن‌ها می‌گویند</h2>
+    <p>بیش از ۲۰۰۰ بیمار راضی، بهترین گواه کیفیت خدمات ماست</p>
+  </div>
+  <div class="testi-grid">
+    <div class="testi-card fu">
+      <div class="stars">★★★★★</div>
+      <p class="testi-text">"واقعاً تجربه‌ای باورنکردنی بود. ایمپلنت‌ام کاملاً طبیعی به نظر می‌رسه و هیچ دردی نداشتم. از روز اول تا آخر همه چیز عالی بود."</p>
+      <div class="testi-author">
+        <div class="avatar">س</div>
+        <div>
+          <div class="a-name">سارا محمدی</div>
+          <div class="a-role">ایمپلنت دندانی · تهران</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card fu d1">
+      <div class="stars">★★★★★</div>
+      <p class="testi-text">"لمینت‌هام دقیقاً همونی شد که می‌خواستم. خیلی طبیعی‌اند و هیچ‌کس باورش نمی‌شه مصنوعی‌ان. دکترشون واقعاً هنرمنده."</p>
+      <div class="testi-author">
+        <div class="avatar">ر</div>
+        <div>
+          <div class="a-name">رضا احمدی</div>
+          <div class="a-role">لمینت سرامیکی · اصفهان</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card fu d2">
+      <div class="stars">★★★★★</div>
+      <p class="testi-text">"از بچگی از دندونپزشک می‌ترسیدم. اینجا کاملاً متفاوت بود. بدون درد، بدون ترس، با محیطی آرامش‌بخش. قطعاً توصیه می‌کنم!"</p>
+      <div class="testi-author">
+        <div class="avatar">م</div>
+        <div>
+          <div class="a-name">مریم کریمی</div>
+          <div class="a-role">ارتودنسی نامرئی · شیراز</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ CTA ══════════════ -->
+<section class="cta-wrap" id="contact">
+  <div class="cta-box fu">
+    <h2>لبخند رویایی‌تان شروع می‌شود</h2>
+    <p>همین الان نوبت مشاوره رایگان خود را رزرو کنید.<br>تیم متخصص ما در اسرع وقت با شما تماس می‌گیرد.</p>
+    <div class="cta-btns">
+      <a href="tel:+9821XXXXXXXX" class="btn-w">📞 تماس تلفنی</a>
+      <a href="#" class="btn-g">💬 واتساپ</a>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ FOOTER ══════════════ -->
+<footer>
+  <div class="foot-grid">
+    <div class="foot-brand">
+      <div class="logo" style="color:white">
+        <div class="logo-icon" style="background:var(--primary);border-color:transparent">🦷</div>
+        دندانپزشکی آرایا
+      </div>
+      <p>ارائه‌دهنده خدمات دندانپزشکی پیشرفته با تکنولوژی روز دنیا و تیم متخصص بین‌المللی.</p>
+      <div class="foot-social">
+        <a class="soc" href="#" title="اینستاگرام">📷</a>
+        <a class="soc" href="#" title="تلگرام">✈️</a>
+        <a class="soc" href="#" title="واتساپ">💬</a>
+        <a class="soc" href="#" title="یوتیوب">▶️</a>
+      </div>
+    </div>
+    <div class="foot-col">
+      <h4>خدمات</h4>
+      <ul>
+        <li><a href="#">ایمپلنت دندانی</a></li>
+        <li><a href="#">لمینت و ونیر</a></li>
+        <li><a href="#">ارتودنسی نامرئی</a></li>
+        <li><a href="#">بلیچینگ</a></li>
+        <li><a href="#">درمان ریشه</a></li>
+      </ul>
+    </div>
+    <div class="foot-col">
+      <h4>لینک‌ها</h4>
+      <ul>
+        <li><a href="#">درباره ما</a></li>
+        <li><a href="#">تیم پزشکی</a></li>
+        <li><a href="#">وبلاگ و مقالات</a></li>
+        <li><a href="#">سوالات متداول</a></li>
+        <li><a href="#">تماس با ما</a></li>
+      </ul>
+    </div>
+    <div class="foot-col">
+      <h4>اطلاعات تماس</h4>
+      <ul>
+        <li><a href="#">📍 تهران، خیابان ولیعصر</a></li>
+        <li><a href="tel:+9821XXXXXXXX">📞 ۰۲۱-XXXX-XXXX</a></li>
+        <li><a href="mailto:info@araya.ir">✉️ info@araya.ir</a></li>
+        <li><a href="#">🕐 شنبه تا پنج‌شنبه ۹–۱۹</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot-bot">
+    <p>© ۱۴۰۳ دندانپزشکی آرایا &nbsp;·&nbsp; تمامی حقوق محفوظ است</p>
+  </div>
+</footer>
+
+<script>
+/* ═══════════ NAVBAR SCROLL ═══════════ */
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll', () => {
+  navbar.classList.toggle('scrolled', window.scrollY > 50);
+}, { passive: true });
+
+/* ═══════════ SOFT-MASK REVEAL ═══════════ */
+const hero       = document.getElementById('hero');
+const revealImg  = document.getElementById('revealImg');
+const scanLines  = document.getElementById('scanLines');
+const cursorRing = document.getElementById('cursorRing');
+const cursorDot  = document.getElementById('cursorDot');
+
+const R = 270;   // reveal circle radius in px  — make bigger/smaller to taste
+
+/* Build the soft radial-gradient mask string.
+   Multiple stops = very gradual "foggy" edge — no hard circle border. */
+function buildMask(xPx, yPx, containerW, containerH) {
+  const xPct = (xPx / containerW) * 100;
+  const yPct = (yPx / containerH) * 100;
+  return `radial-gradient(circle ${R}px at ${xPct}% ${yPct}%,
+    black       0%,
+    black       25%,
+    rgba(0,0,0,.75) 42%,
+    rgba(0,0,0,.4)  58%,
+    rgba(0,0,0,.12) 74%,
+    transparent 100%)`;
+}
+
+function applyMask(x, y) {
+  const rect = hero.getBoundingClientRect();
+  const mask = buildMask(x, y, rect.width, rect.height);
+  revealImg.style.webkitMaskImage = mask;
+  revealImg.style.maskImage       = mask;
+  scanLines.style.webkitMaskImage = mask;
+  scanLines.style.maskImage       = mask;
+}
+
+hero.addEventListener('mouseenter', () => {
+  revealImg.style.opacity  = '1';
+  scanLines.style.opacity  = '1';
+  cursorRing.style.opacity = '1';
+  cursorDot.style.opacity  = '1';
+  hero.style.cursor        = 'none';
+});
+
+hero.addEventListener('mouseleave', () => {
+  revealImg.style.opacity  = '0';
+  scanLines.style.opacity  = '0';
+  cursorRing.style.opacity = '0';
+  cursorDot.style.opacity  = '0';
+});
+
+hero.addEventListener('mousemove', (e) => {
+  const rect = hero.getBoundingClientRect();
+  const x = e.clientX - rect.left;
+  const y = e.clientY - rect.top;
+
+  /* Move custom cursor */
+  cursorRing.style.left = x + 'px';
+  cursorRing.style.top  = y + 'px';
+  cursorDot.style.left  = x + 'px';
+  cursorDot.style.top   = y + 'px';
+
+  /* Update mask with no transition for snappy tracking */
+  revealImg.style.webkitMaskRepeat = 'no-repeat';
+  revealImg.style.maskRepeat       = 'no-repeat';
+  scanLines.style.webkitMaskRepeat = 'no-repeat';
+  scanLines.style.maskRepeat       = 'no-repeat';
+  applyMask(x, y);
+}, { passive: true });
+
+/* Touch support */
+hero.addEventListener('touchmove', (e) => {
+  const t = e.touches[0];
+  const rect = hero.getBoundingClientRect();
+  applyMask(t.clientX - rect.left, t.clientY - rect.top);
+  revealImg.style.opacity = '1';
+  scanLines.style.opacity = '0.7';
+}, { passive: true });
+
+hero.addEventListener('touchend', () => {
+  revealImg.style.transition = 'opacity .5s ease';
+  scanLines.style.transition = 'opacity .5s ease';
+  revealImg.style.opacity = '0';
+  scanLines.style.opacity = '0';
+});
+
+/* ═══════════ INTERSECTION OBSERVER ═══════════ */
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('vis');
+      io.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.12 });
+document.querySelectorAll('.fu').forEach(el => io.observe(el));
+
+/* ═══════════ COUNT-UP NUMBERS ═══════════ */
+const toFa = n => String(n).replace(/\d/g, d => '۰۱۲۳۴۵۶۷۸۹'[d]);
+
+function countUp(el) {
+  const target  = +el.dataset.target;
+  const suffix  = target === 98 ? '٪' : '+';
+  const dur     = 1800;
+  const step    = 16;
+  const inc     = target / (dur / step);
+  let cur       = 0;
+  const timer   = setInterval(() => {
+    cur = Math.min(cur + inc, target);
+    el.textContent = toFa(Math.floor(cur)) + suffix;
+    if (cur >= target) clearInterval(timer);
+  }, step);
+}
+
+const statIO = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      countUp(entry.target);
+      statIO.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.5 });
+document.querySelectorAll('[data-target]').forEach(el => statIO.observe(el));
+</script>
+</body>
+</html>
