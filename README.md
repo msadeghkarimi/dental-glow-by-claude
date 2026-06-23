@@ -218,6 +218,3 @@ cd dental-glow-by-claude
 
 👉 پیج **[@msadeghkarimi](https://instagram.com/msadeghkarimi)** رو دنبال کن.
 
----
-
-> 🤖 این پروژه توسط **Claude Sonnet** (Anthropic) طراحی و کد نویسی شده است.
